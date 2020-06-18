@@ -37,7 +37,7 @@ CONFIG_RTL8188F = y
 CONFIG_USB_HCI = y
 ########################## Features ###########################
 CONFIG_MP_INCLUDED = y
-CONFIG_POWER_SAVING = y
+CONFIG_POWER_SAVING = n
 CONFIG_USB_AUTOSUSPEND = n
 CONFIG_HW_PWRP_DETECTION = n
 CONFIG_WIFI_TEST = n
@@ -115,6 +115,7 @@ CONFIG_PLATFORM_MOZART = n
 CONFIG_PLATFORM_RTK119X = n
 CONFIG_PLATFORM_NOVATEK_NT72668 = n
 CONFIG_PLATFORM_HISILICON = n
+CONFIG_PLATFORM_ST_STM32MP1 = y
 ###############################################################
 
 CONFIG_DRVEXT_MODULE = n
@@ -407,6 +408,18 @@ CROSS_COMPILE ?=
 KVER  := $(shell uname -r)
 KSRC := /lib/modules/$(KVER)/build
 MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
+INSTALL_PREFIX :=
+endif
+
+ifeq ($(CONFIG_PLATFORM_ST_STM32MP1), y)
+	EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
+	EXTRA_CFLAGS += -DCONFIG_IOCTL_CFG80211 -DRTW_USE_CFG80211_STA_EVENT
+	#SUBARCH := $(shell uname -m | sed -e s/i.86/i386/)
+	#ARCH ?= $(SUBARCH)
+	#CROSS_COMPILE ?=
+	#KVER  := $(shell uname -r)
+	#KSRC := /lib/modules/$(KVER)/build
+	#MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
 INSTALL_PREFIX :=
 endif
 
